@@ -27,6 +27,12 @@ sections:
       - https://www.power-technology.com/feed/
       - https://www.enerdata.net/rss.xml
       - https://cleantechnica.com/feed/
+      - https://www.lemonde.fr/economie/rss_full.xml
+      - https://www.usinenouvelle.com/rss/
+      - https://www.pv-magazine.com/feed/
+      - https://www.energy-storage.news/feed/
+      - https://www.carbonbrief.org/feed/
+      - https://www.offshorewind.biz/feed/
   world:
     title: "🌍 Monde & France"
     scope: "Macro: géopolitique, économie, politique publique générale. Pas de tech sectorielle détaillée."
@@ -38,6 +44,9 @@ sections:
       - https://www.lemonde.fr/en/international/rss_full.xml
       - https://theconversation.com/fr/international/articles.atom
       - https://www.h2-view.com/rss/feed/7e35ae9343750355e3b7ede657f9bb2b/ 
+      - https://www.lemonde.fr/international/rss_full.xml
+      - https://www.lemonde.fr/politique/rss_full.xml
+      - https://www.francetvinfo.fr/monde.rss
   finance:
     title: "Finance & Marchés"
     scope: "Marchés financiers, financement de l’énergie/cleantech, dettes, actions, M&A, capex/opex, subventions."
@@ -45,6 +54,9 @@ sections:
     exclude_keywords: []
     feeds:
       - https://theconversation.com/fr/economie/articles.atom
+      - https://www.lemonde.fr/argent/rss_full.xml
+      - https://fr.investing.com/rss/news.rss
+      - https://www.cnbc.com/id/10000664/device/rss/rss.html
   tech:
     title: "Science & Tech"
     scope: "Science/tech générale: IA, réseaux, software/hardware, recherche. Pas d’énergie sectorielle (sauf percées scientifiques)."
@@ -55,6 +67,9 @@ sections:
       - https://www.wired.com/feed/rss
       - https://in.mashable.com/sleep.xml 
       - https://theconversation.com/fr/technologie/articles.atom
+      - https://www.lemonde.fr/pixels/rss_full.xml
+      - https://www.maddyness.com/feed/
+      - https://www.usine-digitale.fr/rss
   ecom:
     title: "eCommerce"
     scope: "Commerce en ligne, plateformes, logistique, marketing digital, conversion."
