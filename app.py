@@ -1,5 +1,5 @@
 # app.py — V3 IHM (Streamlit)
-import os, sys, subprocess, io, shutil, ssl, smtplib, json
+import sys, subprocess, ssl, smtplib, json
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase

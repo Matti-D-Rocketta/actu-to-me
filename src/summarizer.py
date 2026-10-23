@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import List, Dict
-import os
 from openai import OpenAI
 
 SYSTEM_PROMPT = """Tu es un analyste énergie spécialisé hydrogène.
@@ -25,7 +24,6 @@ def format_context_for_section(section_title: str, items: List[Dict], max_chars:
 
 
 def summarize_section(model: str, api_key: str, section_title: str, items: List[Dict], max_chars: int = 12000) -> str:
-    from openai import OpenAI, APIStatusError
     content = format_context_for_section(section_title, items, max_chars)
     try:
         client = OpenAI(api_key=api_key)
@@ -39,7 +37,7 @@ def summarize_section(model: str, api_key: str, section_title: str, items: List[
             ]
         )
         return resp.choices[0].message.content.strip()
-    except Exception as e:
+    except Exception:
         # Fallback sans IA : 3 titres clés + liens (pour ne pas bloquer ta routine)
         top = items[:3]
         if not top:

@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import List, Dict
-import re
 
 def _normalize(s: str) -> str:
     return (s or "").lower()
