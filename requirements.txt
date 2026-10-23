@@ -7,3 +7,4 @@ readability-lxml>=0.8.1
 beautifulsoup4>=4.12.3
 requests>=2.32.2
 lxml>=5.2.1
+streamlit>=1.36
