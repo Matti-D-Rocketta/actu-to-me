@@ -1,5 +1,7 @@
 # Actu to me — RSS → LLM daily brief
 
+[![CI](https://github.com/Matti-D-Rocketta/actu-to-me/actions/workflows/ci.yml/badge.svg)](https://github.com/Matti-D-Rocketta/actu-to-me/actions/workflows/ci.yml)
+
 **EN** · [FR](#fr--version-française)
 
 Turns topic-grouped RSS feeds into a short, readable daily brief: feeds are scoped by keywords, full articles are extracted, then an LLM summarizes them in two passes (per article, then per section) into HTML or plain text.
@@ -21,6 +23,8 @@ config/sources.yaml ─► rss_fetcher        fetch feeds per section, dedupe, c
 ```
 
 V1 mode (`summarizer.py`) skips the per-article pass and summarizes each section in a single call.
+
+**Resilience & cost** — each feed is fetched with a timeout; a dead, blocked or malformed feed is skipped and listed at the end of the run instead of breaking the brief. In V2, article summaries are cached on disk (`.cache/`, keyed on model + content + prompt version, 30-day TTL), so re-running over an overlapping window only pays for new articles.
 
 ## Install
 
@@ -48,7 +52,7 @@ python -m src.main --since 7d --v2 --html --export-articles \
   --max-per-section 20 --links-per-section-max 10 --out out/brief_7d.html
 ```
 
-Main options: `--since`, `--sections`, `--v2`, `--html`, `--out`, `--text-out`, `--export-articles`, `--include-overview`, `--gpt-filter-titles`, `--max-per-section`, `--links-per-section-max`, `--model`. See `python -m src.main --help`.
+Main options: `--since`, `--sections`, `--v2`, `--html`, `--out`, `--text-out`, `--export-articles`, `--include-overview`, `--gpt-filter-titles`, `--max-per-section`, `--links-per-section-max`, `--model`, `--no-cache`, `--cache-path`, `--cache-ttl-days`. See `python -m src.main --help`.
 
 **Streamlit UI** — edit `.env` and `sources.yaml`, run a brief, send it by email (SMTP):
 
@@ -58,9 +62,19 @@ streamlit run app.py
 
 Quick environment check: `python scripts/self_check.py`.
 
+## Development
+
+```bash
+pip install -r requirements-dev.txt
+pytest          # offline: network and OpenAI are mocked
+ruff check .
+```
+
+CI (GitHub Actions) runs lint + tests on Python 3.10 and 3.12 for every push and pull request.
+
 ## Roadmap
 
-- **Robustness** — pytest suite (mocked feed parsing, scope filter, renderer); per-feed network error handling so one dead feed never kills the brief; cache of already-summarized articles to save API calls; GitHub Actions for lint + tests.
+- **Done** — pytest suite, per-feed error handling, article summary cache, CI.
 - **Next** — LLM provider abstraction (OpenAI / Claude); agent mode exposing `generate_brief` as a tool (function calling); scheduled sending (cron / Task Scheduler); Tech/AI and Defense sections.
 
 ## License
@@ -97,6 +111,8 @@ streamlit run app.py                                                     # IHM
 
 Toujours lancer en module (`python -m src.main`). Vérification rapide de l'environnement : `python scripts/self_check.py`.
 
-**Feuille de route** : tests pytest, gestion d'erreur par flux, cache des résumés, CI GitHub Actions ; puis abstraction du fournisseur LLM (OpenAI / Claude), mode agent (function calling), envoi planifié, sections Tech/IA et Défense.
+**Robustesse** : chaque flux a un timeout ; un flux mort ou bloqué est ignoré et listé en fin de run. En V2, les résumés d'articles sont mis en cache (`.cache/`, 30 jours) pour ne pas repayer l'API (`--no-cache` pour désactiver). Tests : `pip install -r requirements-dev.txt` puis `pytest` (hors ligne).
+
+**Feuille de route** : fait — tests pytest, gestion d'erreur par flux, cache des résumés, CI GitHub Actions. Ensuite : abstraction du fournisseur LLM (OpenAI / Claude), mode agent (function calling), envoi planifié, sections Tech/IA et Défense.
 
 Licence MIT.
