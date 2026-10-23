@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse, os, sys, yaml
+import argparse, logging, os, sys, yaml
 from datetime import datetime
 from dotenv import load_dotenv
 
@@ -10,6 +10,9 @@ from .renderer import render_html, render_text
 from .article_summarizer import summarize_article   # V2 étape 1 (article->résumé)
 from .section_synthesizer import synthesize_section, select_top_links  # V2 étape 2 + liens pertinents
 from .scope_filter import filter_by_scope, gpt_filter_titles  # filtrage scope + (option) GPT titres
+from .summary_cache import SummaryCache, summarize_with_cache, DEFAULT_PATH as DEFAULT_CACHE_PATH
+
+log = logging.getLogger("actu")
 
 
 def load_sources(yaml_path: str):
@@ -36,7 +39,19 @@ def main():
     parser.add_argument('--links-per-section-max', type=int, default=10, help='Nb max de liens clés affichés (1..10)')
     parser.add_argument('--gpt-filter-titles', action='store_true', help='Filtre de pertinence par titres avec GPT (optionnel)')
 
+    # Cache des résumés d'articles (V2)
+    parser.add_argument('--no-cache', action='store_true', help='Désactive le cache des résumés d’articles')
+    parser.add_argument('--cache-path', default=DEFAULT_CACHE_PATH, help='Fichier de cache des résumés (V2)')
+    parser.add_argument('--cache-ttl-days', type=int, default=30, help='Durée de vie des entrées du cache (jours)')
+
     args = parser.parse_args()
+
+    # Avertissements (flux en erreur, etc.) sur stderr, sans planter sur une console non UTF-8
+    try:
+        sys.stderr.reconfigure(errors="backslashreplace")
+    except (AttributeError, ValueError):
+        pass
+    logging.basicConfig(level=logging.WARNING, format="[warn] %(message)s")
 
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
     if not OPENAI_API_KEY:
@@ -48,6 +63,9 @@ def main():
     chosen = args.sections or list(all_sections.keys())
 
     since_dt = now_utc() - parse_since(args.since)
+
+    cache = None if (args.no_cache or not args.v2) else SummaryCache(args.cache_path, ttl_days=args.cache_ttl_days)
+    feed_errors: list[dict] = []
 
     summaries: dict[str, str] = {}
     picks: dict[str, list[dict]] = {}                 # V1 fallback: liste brute d'items par section
@@ -67,14 +85,22 @@ def main():
         feeds = meta.get('feeds', [])
 
         # Fetch RSS (triés du plus récent au plus ancien)
-        items_raw = fetch_section(section_title, feeds, since_dt)
+        # Un flux mort est ignoré (et listé en fin de run) ; une section en erreur ne bloque pas les autres.
+        try:
+            items_raw = fetch_section(section_title, feeds, since_dt, errors=feed_errors)
+        except Exception as exc:
+            log.warning("section %s ignorée — %s: %s", key, type(exc).__name__, exc)
+            items_raw = []
 
         # Étape 0 — filtre heuristique gratuit par scope (titre + snippet)
         items_scoped = filter_by_scope(items_raw, inc, exc) if (inc or exc) else items_raw
 
         # Étape 0bis — filtre GPT sur titres (optionnel, seulement en V2 pour limiter le coût)
         if args.v2 and args.gpt_filter_titles and items_scoped:
-            items_scoped = gpt_filter_titles(OPENAI_API_KEY, args.model, section_title, section_scope, items_scoped)
+            try:
+                items_scoped = gpt_filter_titles(OPENAI_API_KEY, args.model, section_title, section_scope, items_scoped)
+            except Exception as exc:
+                log.warning("filtre GPT indisponible pour %s (%s) — titres conservés", key, type(exc).__name__)
 
         # Ce que l'on garde comme "picks" pour le renderer (V1 fallback si besoin)
         picks[section_title] = items_scoped
@@ -100,7 +126,8 @@ def main():
         article_summaries: list[dict] = []
         unavailable_list: list[dict] = []
         for it in items_scoped[:max(args.max_per_section, 1)]:
-            res = summarize_article(args.model, OPENAI_API_KEY, it, section_scope=section_scope)
+            res = summarize_with_cache(cache, summarize_article, args.model, OPENAI_API_KEY, it,
+                                       section_scope=section_scope)
             if res.get("available"):
                 article_summaries.append(res)  # article OK -> résumé IA
             else:
@@ -111,6 +138,8 @@ def main():
                     "snippet": res.get("snippet", "")  # mini résumé RSS si dispo
                 })
 
+        if cache is not None:
+            cache.save()  # sauvegarde par section : un crash ne perd pas les résumés déjà payés
         unavailable_by_section[section_title] = unavailable_list
         # pour l'export "articles détaillés" (les non traités auront summary_ai vide)
         articles_export_map[section_title] = article_summaries + unavailable_list
@@ -168,6 +197,13 @@ def main():
             f.write(render_articles_html("Articles détaillés", date_str, articles_export_map))
         with open(art_txt_path, 'w', encoding='utf-8') as f:
             f.write(render_articles_text("Articles détaillés", date_str, articles_export_map))
+
+    if feed_errors:
+        print(f"{len(feed_errors)} flux en erreur ignoré(s) :", file=sys.stderr)
+        for fe in feed_errors:
+            print(f"  - {fe['feed']} ({fe['error']})", file=sys.stderr)
+    if cache is not None:
+        print(f"Cache résumés : {cache.hits} réutilisé(s), {cache.misses} nouveau(x) — {args.cache_path}")
 
     print(f"✅ Brief généré → {args.text_out}" + (f" et {args.out}" if args.html else ""))
 
