@@ -1,0 +1,82 @@
+# Groupes / sections pour le brief
+sections:
+  hydro:
+    title: "💧 Hydrogène"
+    scope: "Toute la chaîne hydrogène bas-carbone/renouvelable: production (électrolyse PEM/SOEC), stockage, transport (pipelines, 'corridors'), usages (industrie, mobilité lourde, aviation, maritime), politique publique, financements, chaînes d’approvisionnement."
+    include_keywords: ["hydrogen", "hydrogène", "H2", "H₂", "electrolyser", "electrolyzer", "PEM", "SOEC", "fuel cell", "pile à combustible", "electrolysis", "ammonia", "NH3", "pipeline", "corridor"]
+    exclude_keywords: ["nuclear fusion", "bitcoin", "VR", "gaming"]  # exemple
+    feeds:
+      - https://fuelcellsworks.com/feed/
+      - https://hydrogen-central.com/feed/
+      - https://www.france-hydrogene.org/actualites/feed/
+      - https://www.hydrogenfuelnews.com/feed/
+      - https://www.h2-view.com/rss/feed/e15e1d6422c35afec038fbd559797494/
+      - https://www.h2-view.com/rss/feed/cd0a66d9f738890848ed4cec24acc857/
+      - https://www.h2-view.com/rss/feed/f1a7dbd83a1495fb8436380bac6a83ff/ 
+      - https://www.h2-view.com/rss/feed/70facf06dec98554386e326ffd0915d2/ 
+      - https://www.h2-view.com/rss/feed/7e35ae9343750355e3b7ede657f9bb2b/ 
+      - https://fchea.org/feed/
+      - https://h2-international.com/feed/
+      - https://www.powermag.com/category/hydrogen/feed/
+  energy:
+    title: "⚡ Énergie & Transition"
+    scope: "Transition énergétique hors hydrogène: renouvelables (solaire, éolien, hydro, stockage batterie), réseaux, politiques climatiques, marchés de l’énergie, efficacité."
+    include_keywords: ["renewable", "éolien", "solar", "photovoltaic", "storage", "battery", "grid", "PPA", "offshore", "wind", "policy"]
+    exclude_keywords: ["hydrogen", "hydrogène", "H2", "H₂"]  # éviter les doublons avec hydro
+    feeds:
+      - https://www.renewableenergyworld.com/feed/
+      - https://www.power-technology.com/feed/
+      - https://www.enerdata.net/rss.xml
+      - https://cleantechnica.com/feed/
+      - http://www.altenergystocks.com/feed/
+      - https://www.altenergymag.com/rss/news
+      - https://services.lesechos.fr/rss/les-echos-entreprises.xml 
+  world:
+    title: "🌍 Monde & France"
+    scope: "Macro: géopolitique, économie, politique publique générale. Pas de tech sectorielle détaillée."
+    include_keywords: ["election", "policy", "macro", "inflation", "budget", "EU", "France", "US", "China", "sanctions", "trade"]
+    exclude_keywords: []
+    feeds:
+      - https://services.lesechos.fr/rss/les-echos-monde.xml
+      - https://services.lesechos.fr/rss/les-echos-economie.xml
+      - https://services.lesechos.fr/rss/elections.xml
+      - https://services.lesechos.fr/rss/les-echos-politique.xml
+      - https://feeds.bbci.co.uk/news/world/rss.xml
+      - https://feeds.feedburner.com/euronews/en/home/
+      - https://www.lemonde.fr/en/international/rss_full.xml
+      - https://services.lesechos.fr/rss/les-echos-economie.xml
+      - https://theconversation.com/fr/international/articles.atom
+      - https://www.h2-view.com/rss/feed/7e35ae9343750355e3b7ede657f9bb2b/ 
+  finance:
+    title: "Finance & Marchés"
+    scope: "Marchés financiers, financement de l’énergie/cleantech, dettes, actions, M&A, capex/opex, subventions."
+    include_keywords: ["funding", "financing", "subsidy", "grant", "loan", "IPO", "M&A", "capex", "opex", "offtake", "contract"]
+    exclude_keywords: []
+    feeds:
+      - https://services.lesechos.fr/rss/les-echos-finance-marches.xml
+      - https://theconversation.com/fr/economie/articles.atom
+  tech:
+    title: "Science & Tech"
+    scope: "Science/tech générale: IA, réseaux, software/hardware, recherche. Pas d’énergie sectorielle (sauf percées scientifiques)."
+    include_keywords: ["AI", "ML", "chip", "semiconductor", "quantum", "research", "breakthrough"]
+    exclude_keywords: ["hydrogen", "hydrogène"]
+    feeds:
+      - https://services.lesechos.fr/rss/les-echos-tech-medias.xml
+      - https://services.lesechos.fr/rss/les-echos-start-up.xml 
+      - https://techcrunch.com/feed/
+      - https://www.wired.com/feed/rss
+      - https://in.mashable.com/sleep.xml 
+      - https://theconversation.com/fr/technologie/articles.atom
+      - https://services.lesechos.fr/rss/les-echos-tech-medias.xml
+      - https://services.lesechos.fr/rss/les-echos-start-up.xml
+  ecom:
+    title: "eCommerce"
+    scope: "Commerce en ligne, plateformes, logistique, marketing digital, conversion."
+    include_keywords: ["ecommerce", "shop", "cart", "conversion", "checkout", "merchant", "retail", "logistics"]
+    exclude_keywords: []
+    feeds:
+      - https://woocommerce.com/blog/feed/
+      - https://www.practicalecommerce.com/feed
+      - https://www.ecwid.com/blog/feed 
+      - https://ecommerce-platforms.com/feed
+      - https://www.printful.com/blog/feed

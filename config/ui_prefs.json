@@ -1,0 +1,22 @@
+{
+  "mode_epure": true,
+  "since": "24h",
+  "detailed": true,
+  "email_enabled": false,
+  "sections_epure": [
+    "hydro",
+    "energy"
+  ],
+  "sections": [
+    "hydro",
+    "energy",
+    "world"
+  ],
+  "v2": true,
+  "gpt_filter_titles": false,
+  "max_per_section": 12,
+  "links_per_section_max": 10,
+  "export_articles": false,
+  "out_html": "out/brief.html",
+  "out_txt": "out/brief.txt"
+}
