@@ -16,7 +16,7 @@ sections:
       - https://www.h2-view.com/rss/feed/70facf06dec98554386e326ffd0915d2/ 
       - https://www.h2-view.com/rss/feed/7e35ae9343750355e3b7ede657f9bb2b/ 
       - https://fchea.org/feed/
-      - https://h2-international.com/feed/
+      - https://www.h2-international.com/feed/
       - https://www.powermag.com/category/hydrogen/feed/
   energy:
     title: "⚡ Énergie & Transition"
@@ -24,27 +24,18 @@ sections:
     include_keywords: ["renewable", "éolien", "solar", "photovoltaic", "storage", "battery", "grid", "PPA", "offshore", "wind", "policy"]
     exclude_keywords: ["hydrogen", "hydrogène", "H2", "H₂"]  # éviter les doublons avec hydro
     feeds:
-      - https://www.renewableenergyworld.com/feed/
       - https://www.power-technology.com/feed/
       - https://www.enerdata.net/rss.xml
       - https://cleantechnica.com/feed/
-      - http://www.altenergystocks.com/feed/
-      - https://www.altenergymag.com/rss/news
-      - https://services.lesechos.fr/rss/les-echos-entreprises.xml 
   world:
     title: "🌍 Monde & France"
     scope: "Macro: géopolitique, économie, politique publique générale. Pas de tech sectorielle détaillée."
     include_keywords: ["election", "policy", "macro", "inflation", "budget", "EU", "France", "US", "China", "sanctions", "trade"]
     exclude_keywords: []
     feeds:
-      - https://services.lesechos.fr/rss/les-echos-monde.xml
-      - https://services.lesechos.fr/rss/les-echos-economie.xml
-      - https://services.lesechos.fr/rss/elections.xml
-      - https://services.lesechos.fr/rss/les-echos-politique.xml
       - https://feeds.bbci.co.uk/news/world/rss.xml
       - https://feeds.feedburner.com/euronews/en/home/
       - https://www.lemonde.fr/en/international/rss_full.xml
-      - https://services.lesechos.fr/rss/les-echos-economie.xml
       - https://theconversation.com/fr/international/articles.atom
       - https://www.h2-view.com/rss/feed/7e35ae9343750355e3b7ede657f9bb2b/ 
   finance:
@@ -53,7 +44,6 @@ sections:
     include_keywords: ["funding", "financing", "subsidy", "grant", "loan", "IPO", "M&A", "capex", "opex", "offtake", "contract"]
     exclude_keywords: []
     feeds:
-      - https://services.lesechos.fr/rss/les-echos-finance-marches.xml
       - https://theconversation.com/fr/economie/articles.atom
   tech:
     title: "Science & Tech"
@@ -61,14 +51,10 @@ sections:
     include_keywords: ["AI", "ML", "chip", "semiconductor", "quantum", "research", "breakthrough"]
     exclude_keywords: ["hydrogen", "hydrogène"]
     feeds:
-      - https://services.lesechos.fr/rss/les-echos-tech-medias.xml
-      - https://services.lesechos.fr/rss/les-echos-start-up.xml 
       - https://techcrunch.com/feed/
       - https://www.wired.com/feed/rss
       - https://in.mashable.com/sleep.xml 
       - https://theconversation.com/fr/technologie/articles.atom
-      - https://services.lesechos.fr/rss/les-echos-tech-medias.xml
-      - https://services.lesechos.fr/rss/les-echos-start-up.xml
   ecom:
     title: "eCommerce"
     scope: "Commerce en ligne, plateformes, logistique, marketing digital, conversion."
